@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Builder - Create & Export Professional CVs</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Form Section -->
+        <div class="form-section">
+            <div class="header">
+                <div class="header-top">
+                    <div class="header-brand">
+                        <h1><i class="fa-regular fa-file-lines"></i> CV Builder</h1>
+                    </div>
+                    <div class="header-controls">
+                        <a class="back-home" href="index.html" aria-label="Back to home">
+                            <i class="fa-solid fa-arrow-left"></i>
+                            Home
+                        </a>
+                        <button type="button" id="atsToggle" class="ats-toggle" aria-pressed="false">
+                            <i class="fa-solid fa-list-check"></i>
+                            <span>ATS</span>
+                        </button>
+                        <button type="button" id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+                            <i class="fa-solid fa-moon"></i>
+                            <span>Dark</span>
+                        </button>
+                    </div>
+                </div>
+                <p>Create a professional CV and export as PDF</p>
+                <div class="header-actions">
+                    <button type="button" class="add-btn" onclick="loadSampleCV()"><i class="fa-regular fa-clipboard"></i> Load Sample CV</button>
+                    <button type="button" class="add-btn secondary" onclick="downloadSampleJSON()"><i class="fa-solid fa-download"></i> JSON Template</button>
+                    <label for="jsonFileInput" class="add-btn tertiary file-upload"><i class="fa-solid fa-upload"></i> Upload JSON File</label>
+                    <input type="file" id="jsonFileInput" accept=".json" style="display: none;" onchange="uploadJSON(event)">
+                    <div class="action-note">Tip: Upload a JSON file to auto-fill the form.</div>
+                </div>
+                <div id="saveStatus" class="save-status" aria-live="polite">All changes saved</div>
+                <div class="mobile-toggle" role="tablist" aria-label="Form or Preview">
+                    <button type="button" class="view-toggle active" data-view="form" aria-pressed="true">Form</button>
+                    <button type="button" class="view-toggle" data-view="preview" aria-pressed="false">Preview</button>
+                </div>
+            </div>
+
+            <form id="cvForm">
+                <!-- Personal Information -->
+                <h2><i class="fa-regular fa-user"></i> Personal Information</h2>
+                <div class="two-column">
+                    <div class="form-group">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" id="fullName" placeholder="e.g., Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Professional Title *</label>
+                        <input type="text" id="title" placeholder="e.g., Professional Title" required>
+                    </div>
+                </div>
+
+                <div class="two-column">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="email@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" placeholder="+1 (555) 123-4567">
+                    </div>
+                </div>
+
+                <div class="two-column">
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" id="location" placeholder="City, Country">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="summary">Professional Summary</label>
+                    <textarea id="summary" placeholder="Brief overview of your professional background and goals..."></textarea>
+                </div>
+
+                <!-- Objective -->
+                <h2><i class="fa-solid fa-bullseye"></i> Objective</h2>
+                <div class="form-group">
+                    <label for="objective">Career Objective</label>
+                    <textarea id="objective" placeholder="Describe your career goals and what you're looking for..."></textarea>
+                </div>
+
+                <!-- Experience -->
+                <h2><i class="fa-solid fa-briefcase"></i> Work Experience</h2>
+                <div id="experienceList"></div>
+                <button type="button" class="add-btn" onclick="addExperience()">+ Add Experience</button>
+
+                <!-- Education -->
+                <h2><i class="fa-solid fa-graduation-cap"></i> Education</h2>
+                <div id="educationList"></div>
+                <button type="button" class="add-btn" onclick="addEducation()">+ Add Education</button>
+
+                <!-- Skills -->
+                <h2><i class="fa-solid fa-wand-magic-sparkles"></i> Skills</h2>
+                <div class="form-group">
+                    <label for="skills">Skills (comma-separated)</label>
+                    <textarea id="skills" placeholder="e.g., Quality Assurance, Process Validation, cGMP, MS Office..."></textarea>
+                </div>
+
+                <!-- Projects -->
+                <h2><i class="fa-solid fa-thumbtack"></i> Projects</h2>
+                <div id="projectsList"></div>
+                <button type="button" class="add-btn" onclick="addProject()">+ Add Project</button>
+
+                <!-- Achievements -->
+                <h2><i class="fa-solid fa-trophy"></i> Achievements</h2>
+                <div id="achievementsList"></div>
+                <button type="button" class="add-btn" onclick="addAchievement()">+ Add Achievement</button>
+
+                <!-- Certifications -->
+                <h2><i class="fa-solid fa-certificate"></i> Certifications</h2>
+                <div id="certificationsList"></div>
+                <button type="button" class="add-btn" onclick="addCertification()">+ Add Certification</button>
+
+                <!-- Awards -->
+                <h2><i class="fa-solid fa-award"></i> Awards & Honors</h2>
+                <div id="awardsList"></div>
+                <button type="button" class="add-btn" onclick="addAward()">+ Add Award</button>
+
+                <!-- Volunteer Work -->
+                <h2><i class="fa-solid fa-handshake-angle"></i> Volunteer Work</h2>
+                <div id="volunteerList"></div>
+                <button type="button" class="add-btn" onclick="addVolunteer()">+ Add Volunteer Experience</button>
+
+                <!-- Conferences -->
+                <h2><i class="fa-solid fa-microphone-lines"></i> Conferences</h2>
+                <div id="conferencesList"></div>
+                <button type="button" class="add-btn" onclick="addConference()">+ Add Conference</button>
+
+                <!-- Additional Info -->
+                <h2><i class="fa-solid fa-circle-info"></i> Additional Information</h2>
+                <div class="form-group">
+                    <label for="languages">Languages</label>
+                    <textarea id="languages" placeholder="e.g., English, Hindi..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="hobbies">Hobbies / Interests</label>
+                    <textarea id="hobbies" placeholder="e.g., Reading, Marathon running, Photography..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="declaration">Declaration/Notes</label>
+                    <textarea id="declaration" placeholder="e.g., I hereby declare that the above information is true to the best of my knowledge."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="declarationDate">Date (for Declaration)</label>
+                    <input type="text" id="declarationDate" placeholder="e.g., 18 Jan 2026">
+                </div>
+
+                <!-- Export Section -->
+                <div class="export-section">
+                    <button type="button" class="export-btn" onclick="exportPDF()"><i class="fa-solid fa-file-arrow-down"></i> Export as PDF</button>
+                    <button type="reset" class="reset-btn"><i class="fa-solid fa-rotate-left"></i> Reset Form</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Preview Section -->
+        <div class="preview-section">
+            <div class="mobile-preview-actions">
+                <div class="mobile-toggle" role="tablist" aria-label="Form or Preview">
+                    <button type="button" class="view-toggle" data-view="form" aria-pressed="false">Form</button>
+                    <button type="button" class="view-toggle active" data-view="preview" aria-pressed="true">Preview</button>
+                </div>
+                <button type="button" class="export-btn" onclick="exportPDF()"><i class="fa-solid fa-file-arrow-down"></i> Export as PDF</button>
+            </div>
+            <div class="cv-preview" id="cvPreview" aria-live="polite">
+                <div class="cv-header">
+                    <div class="cv-name" id="previewName">Your Name</div>
+                    <div class="cv-title" id="previewTitle">Professional Title</div>
+                    <div class="cv-contact" id="previewContact">
+                        <div id="previewContactContent">Email • Phone • Location</div>
+                    </div>
+                </div>
+
+                <!-- Professional Summary -->
+                <div id="summarySection" class="cv-section" style="display: none;">
+                    <div class="cv-section-title">PROFESSIONAL SUMMARY</div>
+                    <div id="previewSummary" class="cv-item-description"></div>
+                </div>
+
+                <!-- Objective -->
+                <div id="objectiveSection" class="cv-section" style="display: none;">
+                    <div class="cv-section-title">OBJECTIVE</div>
+                    <div id="previewObjective" class="cv-item-description"></div>
+                </div>
+
+                <!-- Experience -->
+                <div id="experienceSection" class="cv-section" style="display: none;">
+                    <div class="cv-section-title">WORK EXPERIENCE</div>
+                    <div id="previewExperience"></div>
+                </div>
+
+                <!-- Education -->
+                <div id="educationSection" class="cv-section" style="display: none;">
+                    <div class="cv-section-title">EDUCATION</div>
+                    <div id="previewEducation"></div>
+                </div>
+
+                <!-- Skills -->
+                <div id="skillsSection" class="cv-section" style="display: none;">
+                    <div class="cv-section-title">SKILLS</div>
+                    <div id="previewSkills"></div>
+                </div>
+
+                <!-- Projects -->
+                <div id="projectsSection" class="cv-section" style="display: none;">
+                    <div class="cv-section-title">PROJECTS</div>
+                    <div id="previewProjects"></div>
+                </div>
+
+                <!-- Certifications -->
+                <div id="certificationsSection" class="cv-section" style="display: none;">
+                    <div class="cv-section-title">CERTIFICATIONS</div>
+                    <div id="previewCertifications"></div>
+                </div>
+
+                <!-- Achievements -->
+                <div id="achievementsSection" class="cv-section" style="display: none;">
+                    <div class="cv-section-title">ACHIEVEMENTS</div>
+                    <div id="previewAchievements"></div>
+                </div>
+
+                <!-- Awards -->
+                <div id="awardsSection" class="cv-section" style="display: none;">
+                    <div class="cv-section-title">AWARDS & HONORS</div>
+                    <div id="previewAwards"></div>
+                </div>
+
+                <!-- Volunteer Work -->
+                <div id="volunteerSection" class="cv-section" style="display: none;">
+                    <div class="cv-section-title">VOLUNTEER WORK</div>
+                    <div id="previewVolunteer"></div>
+                </div>
+
+                <!-- Conferences -->
+                <div id="conferencesSection" class="cv-section" style="display: none;">
+                    <div class="cv-section-title">CONFERENCES</div>
+                    <div id="previewConferences"></div>
+                </div>
+
+                <!-- Languages -->
+                <div id="languagesSection" class="cv-section" style="display: none;">
+                    <div class="cv-section-title">LANGUAGES</div>
+                    <div id="previewLanguages"></div>
+                </div>
+
+                <!-- Hobbies -->
+                <div id="hobbiesSection" class="cv-section" style="display: none;">
+                    <div class="cv-section-title">HOBBIES & INTERESTS</div>
+                    <div id="previewHobbies"></div>
+                </div>
+
+                <!-- Declaration -->
+                <div id="declarationSection" class="cv-section" style="display: none;">
+                    <div class="cv-section-title">DECLARATION</div>
+                    <div id="previewDeclaration" class="cv-item-description"></div>
+                    <div class="declaration-footer">
+                        <div class="declaration-block">
+                            <div class="declaration-label">Date</div>
+                            <div id="previewDeclarationDate" class="declaration-value"></div>
+                        </div>
+                        <div class="declaration-block declaration-signature">
+                            <div class="declaration-label">Signature</div>
+                            <div id="previewDeclarationSignature" class="declaration-value"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <footer class="site-footer">
+        <span>© <span id="footerYear"></span> CV Builder. All rights reserved.</span>
+    </footer>
+    <script src="static/cv-builder.js"></script>
+    <script>
+        const yearEl = document.getElementById('footerYear');
+        if (yearEl) yearEl.textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

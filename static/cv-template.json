@@ -1,0 +1,99 @@
+{
+  "fullName": "Your Full Name",
+  "title": "Your Professional Title",
+  "email": "your.email@example.com",
+  "phone": "+1 (555) 123-4567",
+  "location": "City, Country",
+  "summary": "A brief professional summary about yourself, your experience, and career goals. This should be 2-3 sentences highlighting your key strengths and what you bring to an organization.",
+  "objective": "Your career objective - what you're looking for in your next role and what you aim to achieve professionally.",
+  "skills": "Skill 1, Skill 2, Skill 3, Skill 4, Skill 5, Skill 6, Skill 7, Skill 8",
+  "languages": "English, Spanish, French",
+  "hobbies": "Reading, Photography, Hiking",
+  "declaration": "I hereby declare that the above information is true to the best of my knowledge.",
+  "declarationDate": "18 Jan 2026",
+  "education": [
+    {
+      "degree": "Bachelor's Degree",
+      "institution": "University Name",
+      "year": "2020",
+      "details": "Field of study, relevant coursework, or honors received"
+    },
+    {
+      "degree": "Diploma/Certification",
+      "institution": "Institute Name",
+      "year": "2018",
+      "details": "Any relevant details about the course or certification"
+    }
+  ],
+  "experience": [
+    {
+      "title": "Current Job Title",
+      "company": "Current Company Name",
+      "start": "January 2023",
+      "end": "Present",
+      "location": "City, Country",
+      "description": "Key responsibility 1\nKey responsibility 2\nKey responsibility 3\nMajor achievement or project\nTools or technologies used"
+    },
+    {
+      "title": "Previous Job Title",
+      "company": "Previous Company Name",
+      "start": "June 2021",
+      "end": "December 2022",
+      "location": "City, Country",
+      "description": "Managed team of X people\nIncreased revenue by X%\nImplemented new system/process\nLed project that resulted in X\nReceived award for excellence"
+    }
+  ],
+  "projects": [
+    {
+      "title": "Project Name",
+      "role": "Your Role",
+      "date": "2023 - 2024",
+      "link": "github.com/username/project",
+      "description": "Problem statement\nApproach or tools used\nImpact or result"
+    }
+  ],
+  "achievements": [
+    {
+      "title": "Achievement headline (with metric)",
+      "date": "2023",
+      "details": "What changed and why it matters\nScope or recognition"
+    }
+  ],
+  "certifications": [
+    {
+      "name": "Professional Certification Name",
+      "org": "Issuing Organization",
+      "date": "2023"
+    },
+    {
+      "name": "Another Certification",
+      "org": "Issuing Organization",
+      "date": "2022"
+    }
+  ],
+  "awards": [
+    {
+      "title": "Award or Honor",
+      "issuer": "Issuing Organization",
+      "date": "2022",
+      "details": "Reason for the award"
+    }
+  ],
+  "volunteer": [
+    {
+      "role": "Volunteer Role",
+      "org": "Organization Name",
+      "start": "2021",
+      "end": "2022",
+      "description": "Contribution or impact\nScope of work"
+    }
+  ],
+  "conferences": [
+    {
+      "name": "Conference Name",
+      "year": "2023",
+      "location": "City, Country",
+      "notes": "Talk topic or workshop attended"
+    }
+  ]
+}

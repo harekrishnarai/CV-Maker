@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - CV Builder</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="static/landing.css">
+</head>
+<body>
+    <main class="landing">
+        <nav class="landing-nav">
+            <div class="brand">
+                <i class="fa-regular fa-file-lines"></i>
+                <span>CV Builder</span>
+            </div>
+            <a class="nav-cta" href="index.html">Go Home</a>
+        </nav>
+
+        <section class="hero">
+            <div class="hero-content">
+                <div class="tag">404 • Page not found</div>
+                <h1>We couldn’t find that page.</h1>
+                <p>The link might be broken or the page may have moved. Head back to the home page or jump into the editor.</p>
+                <div class="hero-actions">
+                    <a class="primary-cta" href="index.html">
+                        <i class="fa-solid fa-house"></i>
+                        Back to Home
+                    </a>
+                    <a class="secondary-cta" href="editor.html">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        Open Editor
+                    </a>
+                </div>
+            </div>
+            <div class="hero-card">
+                <div class="card-glow"></div>
+                <div class="card-body">
+                    <div class="card-header">
+                        <span>Lost in the pages</span>
+                        <i class="fa-solid fa-compass"></i>
+                    </div>
+                    <div class="card-line strong"></div>
+                    <div class="card-line"></div>
+                    <div class="card-line short"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <span>© <span id="footerYear"></span> CV Builder. All rights reserved.</span>
+    </footer>
+    <script>
+        const yearEl = document.getElementById('footerYear');
+        if (yearEl) yearEl.textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

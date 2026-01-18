@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Builder - Create & Export Professional CVs</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="static/landing.css">
+</head>
+<body>
+    <main class="landing">
+        <nav class="landing-nav">
+            <div class="brand">
+                <i class="fa-regular fa-file-lines"></i>
+                <span>CV Builder</span>
+            </div>
+            <a class="nav-cta" href="editor.html">Open Editor</a>
+        </nav>
+
+        <section class="hero">
+            <div class="hero-content">
+                <div class="tag">ATS-friendly • Export-ready</div>
+                <h1>Build a standout CV in minutes.</h1>
+                <p>Create a clean, professional resume with live preview, JSON import/export, and one-click PDF generation.</p>
+                <div class="hero-actions">
+                    <a class="primary-cta" href="editor.html">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        Start Building
+                    </a>
+                    <a class="secondary-cta" href="editor.html?sample=1">
+                        <i class="fa-solid fa-rocket"></i>
+                        Try Sample
+                    </a>
+                </div>
+                <div class="hero-meta">
+                    <span><i class="fa-solid fa-circle-check"></i> Live preview</span>
+                    <span><i class="fa-solid fa-circle-check"></i> ATS mode</span>
+                    <span><i class="fa-solid fa-circle-check"></i> PDF export</span>
+                </div>
+            </div>
+            <div class="hero-card">
+                <div class="card-glow"></div>
+                <div class="card-body">
+                    <div class="card-header">
+                        <span>Resume Preview</span>
+                        <i class="fa-solid fa-sparkles"></i>
+                    </div>
+                    <div class="card-line strong"></div>
+                    <div class="card-line"></div>
+                    <div class="card-line"></div>
+                    <div class="card-section">
+                        <div class="card-line short"></div>
+                        <div class="card-line"></div>
+                        <div class="card-line"></div>
+                    </div>
+                    <div class="card-section">
+                        <div class="card-line short"></div>
+                        <div class="card-line"></div>
+                        <div class="card-line"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="feature">
+                <i class="fa-solid fa-sliders"></i>
+                <h3>Structured editor</h3>
+                <p>Guided sections for skills, experience, education, and more.</p>
+            </div>
+            <div class="feature">
+                <i class="fa-solid fa-bolt"></i>
+                <h3>Real-time preview</h3>
+                <p>Instant feedback as you type, with classic CV formatting.</p>
+            </div>
+            <div class="feature">
+                <i class="fa-solid fa-file-arrow-down"></i>
+                <h3>Export-ready</h3>
+                <p>Download a clean PDF whenever you’re ready to apply.</p>
+            </div>
+        </section>
+
+        <section class="workflow">
+            <h2>Fastest way to build your CV</h2>
+            <p class="workflow-subtitle">Use the JSON template + ChatGPT to auto-fill, then upload back.</p>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-badge">1</div>
+                    <h3>Download sample JSON</h3>
+                    <p>Open the editor and click “JSON Template.” Save it locally.</p>
+                </div>
+                <div class="step">
+                    <div class="step-badge">2</div>
+                    <h3>Update with ChatGPT</h3>
+                    <p>Paste the JSON into ChatGPT and ask it to replace with your details.</p>
+                </div>
+                <div class="step">
+                    <div class="step-badge">3</div>
+                    <h3>Upload → done</h3>
+                    <p>Return to the editor, upload your JSON, and export the PDF.</p>
+                </div>
+            </div>
+            <div class="prompt-card">
+                <div class="prompt-header">
+                    <span>Copy this prompt for ChatGPT</span>
+                    <button type="button" class="prompt-copy" data-copy-target="chatgptPrompt">
+                        <i class="fa-regular fa-copy"></i>
+                        Copy
+                    </button>
+                </div>
+                <pre id="chatgptPrompt">Replace all placeholder values in this JSON with my real details. Keep the same keys and structure. Use bullet-style lines where appropriate. Return only valid JSON.</pre>
+            </div>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <span>© <span id="footerYear"></span> CV Builder. All rights reserved.</span>
+    </footer>
+    <script>
+        document.addEventListener('click', (event) => {
+            const button = event.target.closest('.prompt-copy');
+            if (!button) return;
+            const targetId = button.getAttribute('data-copy-target');
+            const target = document.getElementById(targetId);
+            if (!target) return;
+            navigator.clipboard.writeText(target.textContent.trim()).then(() => {
+                const original = button.innerHTML;
+                button.innerHTML = '<i class="fa-solid fa-check"></i> Copied';
+                setTimeout(() => {
+                    button.innerHTML = original;
+                }, 1500);
+            });
+        });
+        const yearEl = document.getElementById('footerYear');
+        if (yearEl) yearEl.textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
