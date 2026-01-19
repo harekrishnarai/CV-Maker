@@ -14,7 +14,13 @@
                 <i class="fa-regular fa-file-lines"></i>
                 <span>CV Builder</span>
             </div>
-            <a class="nav-cta" href="editor.html">Open Editor</a>
+            <div class="nav-actions">
+                <button type="button" id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+                    <i class="fa-solid fa-moon"></i>
+                    <span>Dark</span>
+                </button>
+                <a class="nav-cta" href="editor.html">Open Editor</a>
+            </div>
         </nav>
 
         <section class="hero">
@@ -62,53 +68,33 @@
             </div>
         </section>
 
-        <section class="features">
-            <div class="feature">
-                <i class="fa-solid fa-sliders"></i>
-                <h3>Structured editor</h3>
-                <p>Guided sections for skills, experience, education, and more.</p>
-            </div>
-            <div class="feature">
-                <i class="fa-solid fa-bolt"></i>
-                <h3>Real-time preview</h3>
-                <p>Instant feedback as you type, with classic CV formatting.</p>
-            </div>
-            <div class="feature">
-                <i class="fa-solid fa-file-arrow-down"></i>
-                <h3>Export-ready</h3>
-                <p>Download a clean PDF whenever you’re ready to apply.</p>
-            </div>
-        </section>
-
-        <section class="workflow">
-            <h2>Fastest way to build your CV</h2>
-            <p class="workflow-subtitle">Use the JSON template + ChatGPT to auto-fill, then upload back.</p>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-badge">1</div>
-                    <h3>Download sample JSON</h3>
-                    <p>Open the editor and click “JSON Template.” Save it locally.</p>
+        <section class="info">
+            <div class="info-columns">
+                <div class="info-block">
+                    <h2 class="accent-heading">What you get</h2>
+                    <ul class="info-list">
+                        <li><i class="fa-solid fa-sliders"></i> Structured editor for every CV section</li>
+                        <li><i class="fa-solid fa-bolt"></i> Real-time preview with classic formatting</li>
+                        <li><i class="fa-solid fa-file-arrow-down"></i> One-click PDF export</li>
+                        <li><i class="fa-solid fa-list-check"></i> ATS mode for clean parsing</li>
+                    </ul>
                 </div>
-                <div class="step">
-                    <div class="step-badge">2</div>
-                    <h3>Update with ChatGPT</h3>
-                    <p>Paste the JSON into ChatGPT and ask it to replace with your details.</p>
-                </div>
-                <div class="step">
-                    <div class="step-badge">3</div>
-                    <h3>Upload → done</h3>
-                    <p>Return to the editor, upload your JSON, and export the PDF.</p>
+                <div class="info-block">
+                    <h2 class="accent-heading">Fastest workflow</h2>
+                    <ol class="info-steps numbered">
+                        <li>Download the JSON template from the editor.</li>
+                        <li>Ask ChatGPT to replace placeholders with your details.</li>
+                        <li>Upload the JSON and export the PDF.</li>
+                    </ol>
                 </div>
             </div>
-            <div class="prompt-card">
-                <div class="prompt-header">
-                    <span>Copy this prompt for ChatGPT</span>
-                    <button type="button" class="prompt-copy" data-copy-target="chatgptPrompt">
-                        <i class="fa-regular fa-copy"></i>
-                        Copy
-                    </button>
-                </div>
-                <pre id="chatgptPrompt">Replace all placeholder values in this JSON with my real details. Keep the same keys and structure. Use bullet-style lines where appropriate. Return only valid JSON.</pre>
+            <div class="prompt-strip">
+                <span class="prompt-label"><i class="fa-solid fa-wand-magic-sparkles"></i> AI prompt:</span>
+                <code id="chatgptPrompt">Replace all placeholder values in this JSON with my real details. Keep the same keys and structure. Use bullet-style lines where appropriate. Return only valid JSON.</code>
+                <button type="button" class="prompt-copy" data-copy-target="chatgptPrompt">
+                    <i class="fa-regular fa-copy"></i>
+                    Copy
+                </button>
             </div>
         </section>
     </main>
@@ -132,6 +118,37 @@
         });
         const yearEl = document.getElementById('footerYear');
         if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+        const toggle = document.getElementById('themeToggle');
+        const savedTheme = localStorage.getItem('cvTheme');
+        if (savedTheme) {
+            document.body.dataset.theme = savedTheme;
+            updateToggle(savedTheme === 'dark');
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.body.dataset.theme = 'dark';
+            updateToggle(true);
+        }
+        if (toggle) {
+            toggle.addEventListener('click', () => {
+                const isDark = document.body.dataset.theme === 'dark';
+                if (isDark) {
+                    delete document.body.dataset.theme;
+                    localStorage.removeItem('cvTheme');
+                } else {
+                    document.body.dataset.theme = 'dark';
+                    localStorage.setItem('cvTheme', 'dark');
+                }
+                updateToggle(!isDark);
+            });
+        }
+
+        function updateToggle(isDark) {
+            if (!toggle) return;
+            const icon = toggle.querySelector('i');
+            const label = toggle.querySelector('span');
+            if (icon) icon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            if (label) label.textContent = isDark ? 'Light' : 'Dark';
+        }
     </script>
 </body>
 </html>
