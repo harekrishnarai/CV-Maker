@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('hobbies').addEventListener('input', queuePreviewUpdate);
     document.getElementById('declaration').addEventListener('input', queuePreviewUpdate);
     document.getElementById('declarationDate').addEventListener('input', queuePreviewUpdate);
+    document.getElementById('includeDeclaration').addEventListener('change', queuePreviewUpdate);
 
     // Load from localStorage if available
     loadFromLocalStorage();
@@ -565,7 +566,8 @@ function updatePreview() {
     // Update declaration
     const declaration = document.getElementById('declaration').value;
     const declarationDate = document.getElementById('declarationDate').value;
-    if (declaration.trim()) {
+    const includeDeclaration = document.getElementById('includeDeclaration').checked;
+    if (includeDeclaration && declaration.trim()) {
         document.getElementById('declarationSection').style.display = 'block';
         document.getElementById('previewDeclaration').textContent = declaration;
         document.getElementById('previewDeclarationDate').textContent = declarationDate || '';
@@ -1004,6 +1006,7 @@ function saveToLocalStorage() {
         hobbies: document.getElementById('hobbies').value,
         declaration: document.getElementById('declaration').value,
         declarationDate: document.getElementById('declarationDate').value,
+        includeDeclaration: document.getElementById('includeDeclaration').checked,
         education: [],
         experience: [],
         projects: [],
@@ -1167,6 +1170,7 @@ function loadFromLocalStorage() {
     document.getElementById('hobbies').value = formData.hobbies || '';
     document.getElementById('declaration').value = formData.declaration || '';
     document.getElementById('declarationDate').value = formData.declarationDate || '';
+    document.getElementById('includeDeclaration').checked = formData.includeDeclaration !== false;
 
     // Clear and reload education
     document.getElementById('educationList').innerHTML = '';
@@ -1304,6 +1308,7 @@ function downloadSampleJSON() {
         hobbies: "",
         declaration: "",
         declarationDate: "",
+        includeDeclaration: true,
         education: [
             {
                 degree: "",
@@ -1423,6 +1428,7 @@ function loadFormData(formData) {
     document.getElementById('hobbies').value = formData.hobbies || '';
     document.getElementById('declaration').value = formData.declaration || '';
     document.getElementById('declarationDate').value = formData.declarationDate || '';
+    document.getElementById('includeDeclaration').checked = formData.includeDeclaration !== false;
 
     // Clear and reload education
     document.getElementById('educationList').innerHTML = '';

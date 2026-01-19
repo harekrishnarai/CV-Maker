@@ -11,6 +11,7 @@
   "hobbies": "Reading, Photography, Hiking",
   "declaration": "I hereby declare that the above information is true to the best of my knowledge.",
   "declarationDate": "18 Jan 2026",
+  "includeDeclaration": true,
   "education": [
     {
       "degree": "Bachelor's Degree",

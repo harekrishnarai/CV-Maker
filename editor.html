@@ -150,8 +150,17 @@
                     <textarea id="hobbies" placeholder="e.g., Reading, Marathon running, Photography..."></textarea>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group inline-toggle">
                     <label for="declaration">Declaration/Notes</label>
+                    <div class="toggle-inline">
+                        <span>Include</span>
+                        <label class="switch">
+                            <input type="checkbox" id="includeDeclaration" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
                     <textarea id="declaration" placeholder="e.g., I hereby declare that the above information is true to the best of my knowledge."></textarea>
                 </div>
 
@@ -159,6 +168,7 @@
                     <label for="declarationDate">Date (for Declaration)</label>
                     <input type="text" id="declarationDate" placeholder="e.g., 18 Jan 2026">
                 </div>
+
 
                 <!-- Export Section -->
                 <div class="export-section">
