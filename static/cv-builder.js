@@ -1282,7 +1282,7 @@ function loadFromLocalStorage() {
 // Load sample CV (Abhay Yadav)
 async function loadSampleCV() {
     try {
-        const response = await fetch('static/sample-cv-data.json');
+        const response = await fetch('../static/sample-cv-data.json');
         const formData = await response.json();
         
         loadFormData(formData);
