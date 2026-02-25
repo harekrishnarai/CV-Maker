@@ -466,11 +466,16 @@ gap: 10px;
 }
 @media (min-width: 720px) {
 .header-actions {
-grid-template-columns: repeat(3, minmax(0, 1fr));
+grid-template-columns: repeat(2, minmax(0, 1fr));
 align-items: center;
 }
 .header-actions .action-note {
 grid-column: 1 / -1;
+}
+}
+@media (min-width: 1080px) {
+.header-actions {
+grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 }
 .header-actions .add-btn {
@@ -486,6 +491,39 @@ box-shadow: 0 8px 16px rgba(20, 20, 20, 0.1);
 .header-actions .action-note {
 font-size: 11px;
 letter-spacing: 0.03em;
+}
+.paste-json-panel {
+grid-column: 1 / -1;
+background: rgba(255, 255, 255, 0.6);
+border: 1px solid rgba(255, 255, 255, 0.75);
+border-radius: 12px;
+padding: 12px;
+}
+.paste-json-panel .form-group {
+margin-bottom: 10px;
+}
+.paste-json-panel textarea {
+min-height: 120px;
+font-family: inherit;
+}
+.paste-json-actions {
+display: flex;
+gap: 10px;
+flex-wrap: wrap;
+}
+.paste-json-actions .add-btn {
+margin-top: 0;
+}
+.paste-json-actions .add-btn:first-child {
+flex: 1;
+}
+@media (max-width: 600px) {
+.paste-json-actions {
+flex-direction: column;
+}
+.paste-json-actions .add-btn {
+width: 100%;
+}
 }
 .add-btn.secondary {
 background: linear-gradient(120deg, #166534 0%, #22c55e 100%);
@@ -948,6 +986,10 @@ border-color: rgba(255, 255, 255, 0.12);
 }
 [data-theme="dark"] .header-actions {
 border-top-color: rgba(255, 255, 255, 0.12);
+}
+[data-theme="dark"] .paste-json-panel {
+background: rgba(15, 23, 42, 0.7);
+border-color: rgba(255, 255, 255, 0.12);
 }
 [data-theme="dark"] .action-note {
 color: #a7b0bd;

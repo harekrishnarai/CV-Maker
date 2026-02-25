@@ -198,6 +198,56 @@ function showToast(message, type = 'success') {
     }, 2200);
 }
 
+function togglePasteJSONPanel() {
+    const panel = document.getElementById('pasteJsonPanel');
+    const toggleBtn = document.getElementById('togglePasteJsonBtn');
+    if (!panel || !toggleBtn) return;
+
+    const isHidden = panel.hasAttribute('hidden');
+    if (isHidden) {
+        panel.removeAttribute('hidden');
+        toggleBtn.setAttribute('aria-expanded', 'true');
+        toggleBtn.innerHTML = '<i class="fa-solid fa-chevron-up"></i> Hide Pasted JSON';
+        const textarea = document.getElementById('pasteJsonInput');
+        if (textarea) textarea.focus();
+    } else {
+        panel.setAttribute('hidden', '');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        toggleBtn.innerHTML = '<i class="fa-solid fa-paste"></i> Paste JSON';
+    }
+}
+
+function clearPastedJSON() {
+    const textarea = document.getElementById('pasteJsonInput');
+    if (!textarea) return;
+    textarea.value = '';
+    textarea.focus();
+}
+
+function importPastedJSON() {
+    const textarea = document.getElementById('pasteJsonInput');
+    if (!textarea) return;
+
+    const raw = textarea.value.trim();
+    if (!raw) {
+        showToast('Paste JSON before importing.', 'error');
+        return;
+    }
+
+    try {
+        const formData = JSON.parse(raw);
+        loadFormData(formData);
+        showToast('Pasted JSON imported successfully!', 'success');
+        const panel = document.getElementById('pasteJsonPanel');
+        if (panel && !panel.hasAttribute('hidden')) {
+            togglePasteJSONPanel();
+        }
+    } catch (error) {
+        console.error('Error parsing pasted JSON:', error);
+        showToast('Invalid JSON. Please check formatting and try again.', 'error');
+    }
+}
+
 // Education Management
 function addEducation() {
     const educationList = document.getElementById('educationList');
@@ -1411,6 +1461,8 @@ function uploadJSON(event) {
         }
     };
     reader.readAsText(file);
+
+    event.target.value = '';
 }
 
 // Load form data from JSON object

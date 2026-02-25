@@ -51,7 +51,18 @@
                     <button type="button" class="add-btn secondary" onclick="downloadSampleJSON()"><i class="fa-solid fa-download"></i> JSON Template</button>
                     <label for="jsonFileInput" class="add-btn tertiary file-upload"><i class="fa-solid fa-upload"></i> Upload JSON File</label>
                     <input type="file" id="jsonFileInput" accept=".json" style="display: none;" onchange="uploadJSON(event)">
-                    <div class="action-note">Tip: Upload a JSON file to auto-fill the form.</div>
+                    <button type="button" id="togglePasteJsonBtn" class="add-btn tertiary" aria-expanded="false" aria-controls="pasteJsonPanel" onclick="togglePasteJSONPanel()"><i class="fa-solid fa-paste"></i> Paste JSON</button>
+                    <div id="pasteJsonPanel" class="paste-json-panel" hidden>
+                        <div class="form-group">
+                            <label for="pasteJsonInput">Paste CV JSON</label>
+                            <textarea id="pasteJsonInput" placeholder="Paste valid JSON here..."></textarea>
+                        </div>
+                        <div class="paste-json-actions">
+                            <button type="button" class="add-btn secondary" onclick="importPastedJSON()"><i class="fa-solid fa-check"></i> Import Pasted JSON</button>
+                            <button type="button" class="add-btn tertiary" onclick="clearPastedJSON()"><i class="fa-solid fa-eraser"></i> Clear</button>
+                        </div>
+                    </div>
+                    <div class="action-note">Tip: Upload or paste JSON to auto-fill the form.</div>
                 </div>
                 <div id="saveStatus" class="save-status" aria-live="polite">All changes saved</div>
                 <div class="mobile-toggle" role="tablist" aria-label="Form or Preview">
