@@ -24,6 +24,9 @@ document.addEventListener('DOMContentLoaded', function() {
         queuePreviewUpdate();
     });
     document.getElementById('includeDeclaration').addEventListener('change', queuePreviewUpdate);
+    document.querySelectorAll('.section-visibility-toggle').forEach(toggle => {
+        toggle.addEventListener('change', queuePreviewUpdate);
+    });
 
     // Load from localStorage if available
     loadFromLocalStorage();
@@ -91,11 +94,126 @@ const SORTABLE_LIST_IDS = [
     'conferencesList'
 ];
 
+const SECTION_VISIBILITY_KEYS = [
+    'summary',
+    'experience',
+    'education',
+    'skills',
+    'projects',
+    'certifications',
+    'achievements',
+    'awards',
+    'volunteer',
+    'conferences',
+    'languages',
+    'hobbies'
+];
+
 function queuePreviewUpdate() {
     window.clearTimeout(previewUpdateTimer);
     previewUpdateTimer = window.setTimeout(() => {
         updatePreview();
     }, 150);
+}
+
+function isSectionVisible(sectionKey) {
+    const toggle = document.querySelector(`.section-visibility-toggle[data-section="${sectionKey}"]`);
+    if (!toggle) return true;
+    return toggle.checked;
+}
+
+function applySectionVisibility(visibility) {
+    if (!visibility || typeof visibility !== 'object') return;
+    SECTION_VISIBILITY_KEYS.forEach(key => {
+        const toggle = document.querySelector(`.section-visibility-toggle[data-section="${key}"]`);
+        if (!toggle) return;
+        toggle.checked = visibility[key] !== false;
+    });
+}
+
+function getSectionVisibilityState() {
+    const visibility = {};
+    SECTION_VISIBILITY_KEYS.forEach(key => {
+        visibility[key] = isSectionVisible(key);
+    });
+    return visibility;
+}
+
+function showImportValidation(result) {
+    const panel = document.getElementById('importValidation');
+    if (!panel) return;
+
+    const errors = result?.errors || [];
+    const warnings = result?.warnings || [];
+
+    if (errors.length === 0 && warnings.length === 0) {
+        panel.setAttribute('hidden', '');
+        panel.innerHTML = '';
+        return;
+    }
+
+    const lines = [];
+    if (errors.length > 0) {
+        lines.push(`<div class="import-validation-title error">Import errors (${errors.length})</div>`);
+        lines.push('<ul>');
+        errors.forEach(item => lines.push(`<li>${item}</li>`));
+        lines.push('</ul>');
+    }
+    if (warnings.length > 0) {
+        lines.push(`<div class="import-validation-title warning">Import warnings (${warnings.length})</div>`);
+        lines.push('<ul>');
+        warnings.forEach(item => lines.push(`<li>${item}</li>`));
+        lines.push('</ul>');
+    }
+
+    panel.innerHTML = lines.join('');
+    panel.removeAttribute('hidden');
+}
+
+function validateImportedData(formData) {
+    const result = { errors: [], warnings: [] };
+    if (!formData || typeof formData !== 'object' || Array.isArray(formData)) {
+        result.errors.push('Top-level JSON must be an object.');
+        return result;
+    }
+
+    const template = getCVTemplateData();
+    Object.keys(template).forEach((key) => {
+        if (!(key in formData)) {
+            result.warnings.push(`Missing key: ${key} (default will be used).`);
+            return;
+        }
+
+        const expected = template[key];
+        const value = formData[key];
+
+        if (Array.isArray(expected)) {
+            if (!Array.isArray(value)) {
+                result.errors.push(`Key ${key} must be an array.`);
+            }
+            return;
+        }
+
+        if (typeof expected === 'boolean') {
+            if (typeof value !== 'boolean') {
+                result.errors.push(`Key ${key} must be true or false.`);
+            }
+            return;
+        }
+
+        if (typeof expected === 'object' && expected !== null) {
+            if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+                result.errors.push(`Key ${key} must be an object.`);
+            }
+            return;
+        }
+
+        if (typeof expected === 'string' && typeof value !== 'string') {
+            result.errors.push(`Key ${key} must be a string.`);
+        }
+    });
+
+    return result;
 }
 
 function initSectionReordering() {
@@ -384,6 +502,12 @@ function importPastedJSON() {
 
     try {
         const formData = JSON.parse(raw);
+        const validation = validateImportedData(formData);
+        showImportValidation(validation);
+        if (validation.errors.length > 0) {
+            showToast('Import blocked: fix JSON validation errors.', 'error');
+            return;
+        }
         loadFormData(formData);
         showToast('Pasted JSON imported successfully!', 'success');
         const panel = document.getElementById('pasteJsonPanel');
@@ -728,7 +852,7 @@ function updatePreview() {
 
     // Update summary
     const summary = document.getElementById('summary').value;
-    if (summary.trim()) {
+    if (isSectionVisible('summary') && summary.trim()) {
         document.getElementById('summarySection').style.display = 'block';
         document.getElementById('previewSummary').textContent = summary;
     } else {
@@ -818,6 +942,10 @@ function updateContactInfo() {
 }
 
 function updateEducationPreview() {
+    if (!isSectionVisible('education')) {
+        document.getElementById('educationSection').style.display = 'none';
+        return;
+    }
     const educationList = document.getElementById('educationList');
     const educationItems = educationList.querySelectorAll('.form-array-item');
     let html = '';
@@ -853,6 +981,10 @@ function updateEducationPreview() {
 }
 
 function updateExperiencePreview() {
+    if (!isSectionVisible('experience')) {
+        document.getElementById('experienceSection').style.display = 'none';
+        return;
+    }
     const experienceList = document.getElementById('experienceList');
     const experienceItems = experienceList.querySelectorAll('.form-array-item');
     let html = '';
@@ -901,6 +1033,10 @@ function updateExperiencePreview() {
 }
 
 function updateProjectsPreview() {
+    if (!isSectionVisible('projects')) {
+        document.getElementById('projectsSection').style.display = 'none';
+        return;
+    }
     const projectsList = document.getElementById('projectsList');
     const projectItems = projectsList.querySelectorAll('.form-array-item');
     let html = '';
@@ -947,6 +1083,10 @@ function updateProjectsPreview() {
 }
 
 function updateSkillsPreview() {
+    if (!isSectionVisible('skills')) {
+        document.getElementById('skillsSection').style.display = 'none';
+        return;
+    }
     const skills = document.getElementById('skills').value;
     if (skills.trim()) {
         document.getElementById('skillsSection').style.display = 'block';
@@ -959,6 +1099,10 @@ function updateSkillsPreview() {
 }
 
 function updateAchievementsPreview() {
+    if (!isSectionVisible('achievements')) {
+        document.getElementById('achievementsSection').style.display = 'none';
+        return;
+    }
     const achievementsList = document.getElementById('achievementsList');
     const achievementItems = achievementsList.querySelectorAll('.form-array-item');
     let html = '';
@@ -1001,6 +1145,10 @@ function updateAchievementsPreview() {
 }
 
 function updateCertificationsPreview() {
+    if (!isSectionVisible('certifications')) {
+        document.getElementById('certificationsSection').style.display = 'none';
+        return;
+    }
     const certificationsList = document.getElementById('certificationsList');
     const certificationItems = certificationsList.querySelectorAll('.form-array-item');
     let html = '';
@@ -1034,6 +1182,10 @@ function updateCertificationsPreview() {
 }
 
 function updateLanguagesPreview() {
+    if (!isSectionVisible('languages')) {
+        document.getElementById('languagesSection').style.display = 'none';
+        return;
+    }
     const languages = document.getElementById('languages').value;
     if (languages.trim()) {
         document.getElementById('languagesSection').style.display = 'block';
@@ -1046,6 +1198,10 @@ function updateLanguagesPreview() {
 }
 
 function updateHobbiesPreview() {
+    if (!isSectionVisible('hobbies')) {
+        document.getElementById('hobbiesSection').style.display = 'none';
+        return;
+    }
     const hobbies = document.getElementById('hobbies').value;
     if (hobbies.trim()) {
         document.getElementById('hobbiesSection').style.display = 'block';
@@ -1058,6 +1214,10 @@ function updateHobbiesPreview() {
 }
 
 function updateAwardsPreview() {
+    if (!isSectionVisible('awards')) {
+        document.getElementById('awardsSection').style.display = 'none';
+        return;
+    }
     const awardsList = document.getElementById('awardsList');
     const awardItems = awardsList.querySelectorAll('.form-array-item');
     let html = '';
@@ -1102,6 +1262,10 @@ function updateAwardsPreview() {
 }
 
 function updateVolunteerPreview() {
+    if (!isSectionVisible('volunteer')) {
+        document.getElementById('volunteerSection').style.display = 'none';
+        return;
+    }
     const volunteerList = document.getElementById('volunteerList');
     const volunteerItems = volunteerList.querySelectorAll('.form-array-item');
     let html = '';
@@ -1148,6 +1312,10 @@ function updateVolunteerPreview() {
 }
 
 function updateConferencesPreview() {
+    if (!isSectionVisible('conferences')) {
+        document.getElementById('conferencesSection').style.display = 'none';
+        return;
+    }
     const conferencesList = document.getElementById('conferencesList');
     const conferenceItems = conferencesList.querySelectorAll('.form-array-item');
     let html = '';
@@ -1217,6 +1385,7 @@ function saveToLocalStorage() {
         summary: document.getElementById('summary').value,
         objective: document.getElementById('objective').value,
         includeObjective: document.getElementById('includeObjective').checked,
+        sectionVisibility: getSectionVisibilityState(),
         skills: document.getElementById('skills').value,
         languages: document.getElementById('languages').value,
         hobbies: document.getElementById('hobbies').value,
@@ -1388,6 +1557,7 @@ function loadFromLocalStorage() {
     document.getElementById('declaration').value = formData.declaration || '';
     document.getElementById('declarationDate').value = formData.declarationDate || '';
     document.getElementById('includeDeclaration').checked = formData.includeDeclaration !== false;
+    applySectionVisibility(formData.sectionVisibility);
     syncObjectiveToggleState();
 
     // Clear and reload education
@@ -1521,6 +1691,20 @@ function getCVTemplateData() {
         summary: "",
         objective: "",
         includeObjective: true,
+        sectionVisibility: {
+            summary: true,
+            experience: true,
+            education: true,
+            skills: true,
+            projects: true,
+            certifications: true,
+            achievements: true,
+            awards: true,
+            volunteer: true,
+            conferences: true,
+            languages: true,
+            hobbies: true
+        },
         skills: "",
         languages: "",
         hobbies: "",
@@ -1655,6 +1839,12 @@ function uploadJSON(event) {
     reader.onload = function(e) {
         try {
             const formData = JSON.parse(e.target.result);
+            const validation = validateImportedData(formData);
+            showImportValidation(validation);
+            if (validation.errors.length > 0) {
+                showToast('Import blocked: fix JSON validation errors.', 'error');
+                return;
+            }
             loadFormData(formData);
             showToast('JSON file loaded successfully!', 'success');
         } catch (error) {
@@ -1684,6 +1874,7 @@ function loadFormData(formData) {
     document.getElementById('declaration').value = formData.declaration || '';
     document.getElementById('declarationDate').value = formData.declarationDate || '';
     document.getElementById('includeDeclaration').checked = formData.includeDeclaration !== false;
+    applySectionVisibility(formData.sectionVisibility);
     syncObjectiveToggleState();
 
     // Clear and reload education
