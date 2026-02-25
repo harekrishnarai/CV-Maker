@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initThemeToggle();
     initViewToggle();
     initATSToggle();
+    initSectionReordering();
 
     // Personal information listeners
     document.getElementById('fullName').addEventListener('input', queuePreviewUpdate);
@@ -75,12 +76,95 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 let previewUpdateTimer = null;
+let draggingItem = null;
+let draggingSourceList = null;
+
+const SORTABLE_LIST_IDS = [
+    'educationList',
+    'experienceList',
+    'projectsList',
+    'achievementsList',
+    'certificationsList',
+    'awardsList',
+    'volunteerList',
+    'conferencesList'
+];
 
 function queuePreviewUpdate() {
     window.clearTimeout(previewUpdateTimer);
     previewUpdateTimer = window.setTimeout(() => {
         updatePreview();
     }, 150);
+}
+
+function initSectionReordering() {
+    SORTABLE_LIST_IDS.forEach(listId => {
+        const list = document.getElementById(listId);
+        if (!list) return;
+
+        list.addEventListener('dragover', (event) => {
+            if (!draggingItem || draggingSourceList !== list) return;
+            event.preventDefault();
+            const afterElement = getDragAfterElement(list, event.clientY);
+            if (!afterElement) {
+                list.appendChild(draggingItem);
+            } else {
+                list.insertBefore(draggingItem, afterElement);
+            }
+        });
+
+        list.addEventListener('drop', (event) => {
+            if (!draggingItem || draggingSourceList !== list) return;
+            event.preventDefault();
+            queuePreviewUpdate();
+        });
+    });
+}
+
+function getDragAfterElement(container, mouseY) {
+    const items = [...container.querySelectorAll('.form-array-item')]
+        .filter(item => item !== draggingItem);
+
+    let closest = { offset: Number.NEGATIVE_INFINITY, element: null };
+
+    items.forEach(item => {
+        const rect = item.getBoundingClientRect();
+        const offset = mouseY - rect.top - rect.height / 2;
+        if (offset < 0 && offset > closest.offset) {
+            closest = { offset, element: item };
+        }
+    });
+
+    return closest.element;
+}
+
+function addDragHandle(item) {
+    if (!item || item.querySelector('.drag-handle')) return;
+
+    const handle = document.createElement('button');
+    handle.type = 'button';
+    handle.className = 'drag-handle';
+    handle.draggable = true;
+    handle.setAttribute('aria-label', 'Reorder item');
+    handle.innerHTML = '<i class="fa-solid fa-grip-vertical"></i> Reorder';
+
+    handle.addEventListener('dragstart', (event) => {
+        draggingItem = item;
+        draggingSourceList = item.parentElement;
+        item.classList.add('dragging');
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/plain', item.id || 'drag-item');
+    });
+
+    handle.addEventListener('dragend', () => {
+        if (draggingItem) {
+            draggingItem.classList.remove('dragging');
+        }
+        draggingItem = null;
+        draggingSourceList = null;
+    });
+
+    item.insertAdjacentElement('afterbegin', handle);
 }
 
 function initThemeToggle() {
@@ -291,6 +375,8 @@ function addEducation() {
         </div>
     `;
     educationList.insertAdjacentHTML('beforeend', html);
+    const lastItem = educationList.lastElementChild;
+    addDragHandle(lastItem);
     updatePreview();
 }
 
@@ -337,6 +423,8 @@ function addExperience() {
         </div>
     `;
     experienceList.insertAdjacentHTML('beforeend', html);
+    const lastItem = experienceList.lastElementChild;
+    addDragHandle(lastItem);
     updatePreview();
 }
 
@@ -379,6 +467,8 @@ function addProject() {
         </div>
     `;
     projectsList.insertAdjacentHTML('beforeend', html);
+    const lastItem = projectsList.lastElementChild;
+    addDragHandle(lastItem);
     updatePreview();
 }
 
@@ -411,6 +501,8 @@ function addAchievement() {
         </div>
     `;
     achievementsList.insertAdjacentHTML('beforeend', html);
+    const lastItem = achievementsList.lastElementChild;
+    addDragHandle(lastItem);
     updatePreview();
 }
 
@@ -443,6 +535,8 @@ function addCertification() {
         </div>
     `;
     certificationsList.insertAdjacentHTML('beforeend', html);
+    const lastItem = certificationsList.lastElementChild;
+    addDragHandle(lastItem);
     updatePreview();
 }
 
@@ -479,6 +573,8 @@ function addAward() {
         </div>
     `;
     awardsList.insertAdjacentHTML('beforeend', html);
+    const lastItem = awardsList.lastElementChild;
+    addDragHandle(lastItem);
     updatePreview();
 }
 
@@ -521,6 +617,8 @@ function addVolunteer() {
         </div>
     `;
     volunteerList.insertAdjacentHTML('beforeend', html);
+    const lastItem = volunteerList.lastElementChild;
+    addDragHandle(lastItem);
     updatePreview();
 }
 
@@ -557,6 +655,8 @@ function addConference() {
         </div>
     `;
     conferencesList.insertAdjacentHTML('beforeend', html);
+    const lastItem = conferencesList.lastElementChild;
+    addDragHandle(lastItem);
     updatePreview();
 }
 
