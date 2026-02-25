@@ -260,6 +260,34 @@ border: 1px solid rgba(255, 255, 255, 0.7);
 box-shadow: var(--shadow-soft);
 backdrop-filter: blur(6px);
 }
+.form-section h2.section-heading-with-toggle {
+display: flex;
+width: 100%;
+justify-content: space-between;
+align-items: center;
+gap: 12px;
+}
+.form-section h2.section-heading-with-toggle > span {
+display: inline-flex;
+align-items: center;
+gap: 10px;
+}
+.form-section h2.section-heading-with-toggle .toggle-inline {
+font-size: 11px;
+letter-spacing: 0;
+text-transform: none;
+}
+.subsection-heading-with-toggle {
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 12px;
+margin-top: 4px;
+margin-bottom: 8px;
+font-size: 13px;
+font-weight: 600;
+color: var(--ink);
+}
 .form-group {
 margin-bottom: 16px;
 }
@@ -612,10 +640,6 @@ color: #a16207;
 .import-validation ul {
 margin: 0 0 6px 18px;
 }
-.section-toggle-row {
-margin-top: -4px;
-margin-bottom: 12px;
-}
 .save-status {
 margin-top: 12px;
 font-size: 12px;
@@ -915,6 +939,15 @@ padding: 22px 18px;
 font-size: 14px;
 letter-spacing: 0.14em;
 padding: 8px 12px;
+}
+.form-section h2.section-heading-with-toggle {
+gap: 8px;
+}
+.form-section h2.section-heading-with-toggle .toggle-inline {
+font-size: 10px;
+}
+.subsection-heading-with-toggle {
+font-size: 12px;
 }
 .header h1 {
 font-size: 24px;

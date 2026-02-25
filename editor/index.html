@@ -106,180 +106,157 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="summary">Professional Summary</label>
-                    <textarea id="summary" placeholder="Brief overview of your professional background and goals..."></textarea>
-                </div>
-                <div class="form-group inline-toggle section-toggle-row">
-                    <label>Show Summary in CV</label>
+                <h2 class="section-heading-with-toggle">
+                    <span><i class="fa-solid fa-align-left"></i> Professional Summary</span>
                     <div class="toggle-inline">
-                        <span>Include</span>
                         <label class="switch">
                             <input type="checkbox" class="section-visibility-toggle" data-section="summary" checked>
                             <span class="slider"></span>
                         </label>
                     </div>
+                </h2>
+                <div class="form-group">
+                    <textarea id="summary" placeholder="Brief overview of your professional background and goals..."></textarea>
                 </div>
 
                 <!-- Objective -->
-                <h2><i class="fa-solid fa-bullseye"></i> Objective</h2>
-                <div class="form-group inline-toggle">
-                    <label for="objective">Career Objective</label>
+                <h2 class="section-heading-with-toggle">
+                    <span><i class="fa-solid fa-bullseye"></i> Objective</span>
                     <div class="toggle-inline">
-                        <span>Include</span>
                         <label class="switch">
                             <input type="checkbox" id="includeObjective" checked>
                             <span class="slider"></span>
                         </label>
                     </div>
-                </div>
+                </h2>
                 <div class="form-group">
                     <textarea id="objective" placeholder="Describe your career goals and what you're looking for..."></textarea>
                 </div>
 
                 <!-- Experience -->
-                <h2><i class="fa-solid fa-briefcase"></i> Work Experience</h2>
-                <div class="form-group inline-toggle section-toggle-row">
-                    <label>Show Experience in CV</label>
+                <h2 class="section-heading-with-toggle">
+                    <span><i class="fa-solid fa-briefcase"></i> Work Experience</span>
                     <div class="toggle-inline">
-                        <span>Include</span>
                         <label class="switch">
                             <input type="checkbox" class="section-visibility-toggle" data-section="experience" checked>
                             <span class="slider"></span>
                         </label>
                     </div>
-                </div>
+                </h2>
                 <div id="experienceList"></div>
                 <button type="button" class="add-btn" onclick="addExperience()">+ Add Experience</button>
 
                 <!-- Education -->
-                <h2><i class="fa-solid fa-graduation-cap"></i> Education</h2>
-                <div class="form-group inline-toggle section-toggle-row">
-                    <label>Show Education in CV</label>
+                <h2 class="section-heading-with-toggle">
+                    <span><i class="fa-solid fa-graduation-cap"></i> Education</span>
                     <div class="toggle-inline">
-                        <span>Include</span>
                         <label class="switch">
                             <input type="checkbox" class="section-visibility-toggle" data-section="education" checked>
                             <span class="slider"></span>
                         </label>
                     </div>
-                </div>
+                </h2>
                 <div id="educationList"></div>
                 <button type="button" class="add-btn" onclick="addEducation()">+ Add Education</button>
 
                 <!-- Skills -->
-                <h2><i class="fa-solid fa-wand-magic-sparkles"></i> Skills</h2>
-                <div class="form-group inline-toggle section-toggle-row">
-                    <label>Show Skills in CV</label>
+                <h2 class="section-heading-with-toggle">
+                    <span><i class="fa-solid fa-wand-magic-sparkles"></i> Skills</span>
                     <div class="toggle-inline">
-                        <span>Include</span>
                         <label class="switch">
                             <input type="checkbox" class="section-visibility-toggle" data-section="skills" checked>
                             <span class="slider"></span>
                         </label>
                     </div>
-                </div>
+                </h2>
                 <div class="form-group">
                     <label for="skills">Skills (comma-separated)</label>
                     <textarea id="skills" placeholder="e.g., Quality Assurance, Process Validation, cGMP, MS Office..."></textarea>
                 </div>
 
                 <!-- Projects -->
-                <h2><i class="fa-solid fa-thumbtack"></i> Projects</h2>
-                <div class="form-group inline-toggle section-toggle-row">
-                    <label>Show Projects in CV</label>
+                <h2 class="section-heading-with-toggle">
+                    <span><i class="fa-solid fa-thumbtack"></i> Projects</span>
                     <div class="toggle-inline">
-                        <span>Include</span>
                         <label class="switch">
                             <input type="checkbox" class="section-visibility-toggle" data-section="projects" checked>
                             <span class="slider"></span>
                         </label>
                     </div>
-                </div>
+                </h2>
                 <div id="projectsList"></div>
                 <button type="button" class="add-btn" onclick="addProject()">+ Add Project</button>
 
                 <!-- Achievements -->
-                <h2><i class="fa-solid fa-trophy"></i> Achievements</h2>
-                <div class="form-group inline-toggle section-toggle-row">
-                    <label>Show Achievements in CV</label>
+                <h2 class="section-heading-with-toggle">
+                    <span><i class="fa-solid fa-trophy"></i> Achievements</span>
                     <div class="toggle-inline">
-                        <span>Include</span>
                         <label class="switch">
                             <input type="checkbox" class="section-visibility-toggle" data-section="achievements" checked>
                             <span class="slider"></span>
                         </label>
                     </div>
-                </div>
+                </h2>
                 <div id="achievementsList"></div>
                 <button type="button" class="add-btn" onclick="addAchievement()">+ Add Achievement</button>
 
                 <!-- Certifications -->
-                <h2><i class="fa-solid fa-certificate"></i> Certifications</h2>
-                <div class="form-group inline-toggle section-toggle-row">
-                    <label>Show Certifications in CV</label>
+                <h2 class="section-heading-with-toggle">
+                    <span><i class="fa-solid fa-certificate"></i> Certifications</span>
                     <div class="toggle-inline">
-                        <span>Include</span>
                         <label class="switch">
                             <input type="checkbox" class="section-visibility-toggle" data-section="certifications" checked>
                             <span class="slider"></span>
                         </label>
                     </div>
-                </div>
+                </h2>
                 <div id="certificationsList"></div>
                 <button type="button" class="add-btn" onclick="addCertification()">+ Add Certification</button>
 
                 <!-- Awards -->
-                <h2><i class="fa-solid fa-award"></i> Awards & Honors</h2>
-                <div class="form-group inline-toggle section-toggle-row">
-                    <label>Show Awards in CV</label>
+                <h2 class="section-heading-with-toggle">
+                    <span><i class="fa-solid fa-award"></i> Awards & Honors</span>
                     <div class="toggle-inline">
-                        <span>Include</span>
                         <label class="switch">
                             <input type="checkbox" class="section-visibility-toggle" data-section="awards" checked>
                             <span class="slider"></span>
                         </label>
                     </div>
-                </div>
+                </h2>
                 <div id="awardsList"></div>
                 <button type="button" class="add-btn" onclick="addAward()">+ Add Award</button>
 
                 <!-- Volunteer Work -->
-                <h2><i class="fa-solid fa-handshake-angle"></i> Volunteer Work</h2>
-                <div class="form-group inline-toggle section-toggle-row">
-                    <label>Show Volunteer in CV</label>
+                <h2 class="section-heading-with-toggle">
+                    <span><i class="fa-solid fa-handshake-angle"></i> Volunteer Work</span>
                     <div class="toggle-inline">
-                        <span>Include</span>
                         <label class="switch">
                             <input type="checkbox" class="section-visibility-toggle" data-section="volunteer" checked>
                             <span class="slider"></span>
                         </label>
                     </div>
-                </div>
+                </h2>
                 <div id="volunteerList"></div>
                 <button type="button" class="add-btn" onclick="addVolunteer()">+ Add Volunteer Experience</button>
 
                 <!-- Conferences -->
-                <h2><i class="fa-solid fa-microphone-lines"></i> Conferences</h2>
-                <div class="form-group inline-toggle section-toggle-row">
-                    <label>Show Conferences in CV</label>
+                <h2 class="section-heading-with-toggle">
+                    <span><i class="fa-solid fa-microphone-lines"></i> Conferences</span>
                     <div class="toggle-inline">
-                        <span>Include</span>
                         <label class="switch">
                             <input type="checkbox" class="section-visibility-toggle" data-section="conferences" checked>
                             <span class="slider"></span>
                         </label>
                     </div>
-                </div>
+                </h2>
                 <div id="conferencesList"></div>
                 <button type="button" class="add-btn" onclick="addConference()">+ Add Conference</button>
 
                 <!-- Additional Info -->
                 <h2><i class="fa-solid fa-circle-info"></i> Additional Information</h2>
-                <div class="form-group inline-toggle section-toggle-row">
-                    <label>Show Languages in CV</label>
+                <div class="subsection-heading-with-toggle">
+                    <span>Languages</span>
                     <div class="toggle-inline">
-                        <span>Include</span>
                         <label class="switch">
                             <input type="checkbox" class="section-visibility-toggle" data-section="languages" checked>
                             <span class="slider"></span>
@@ -287,14 +264,12 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="languages">Languages</label>
                     <textarea id="languages" placeholder="e.g., English, Hindi..."></textarea>
                 </div>
 
-                <div class="form-group inline-toggle section-toggle-row">
-                    <label>Show Hobbies in CV</label>
+                <div class="subsection-heading-with-toggle">
+                    <span>Hobbies / Interests</span>
                     <div class="toggle-inline">
-                        <span>Include</span>
                         <label class="switch">
                             <input type="checkbox" class="section-visibility-toggle" data-section="hobbies" checked>
                             <span class="slider"></span>
@@ -302,7 +277,6 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="hobbies">Hobbies / Interests</label>
                     <textarea id="hobbies" placeholder="e.g., Reading, Marathon running, Photography..."></textarea>
                 </div>
 
