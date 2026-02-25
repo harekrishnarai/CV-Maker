@@ -177,10 +177,13 @@ function validateImportedData(formData) {
         return result;
     }
 
+    const optionalImportKeys = new Set(['sectionVisibility']);
     const template = getCVTemplateData();
     Object.keys(template).forEach((key) => {
         if (!(key in formData)) {
-            result.warnings.push(`Missing key: ${key} (default will be used).`);
+            if (!optionalImportKeys.has(key)) {
+                result.warnings.push(`Missing key: ${key} (default will be used).`);
+            }
             return;
         }
 
@@ -1690,21 +1693,6 @@ function getCVTemplateData() {
         location: "",
         summary: "",
         objective: "",
-        includeObjective: true,
-        sectionVisibility: {
-            summary: true,
-            experience: true,
-            education: true,
-            skills: true,
-            projects: true,
-            certifications: true,
-            achievements: true,
-            awards: true,
-            volunteer: true,
-            conferences: true,
-            languages: true,
-            hobbies: true
-        },
         skills: "",
         languages: "",
         hobbies: "",
