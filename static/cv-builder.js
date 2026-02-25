@@ -18,10 +18,15 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('hobbies').addEventListener('input', queuePreviewUpdate);
     document.getElementById('declaration').addEventListener('input', queuePreviewUpdate);
     document.getElementById('declarationDate').addEventListener('input', queuePreviewUpdate);
+    document.getElementById('includeObjective').addEventListener('change', () => {
+        syncObjectiveToggleState();
+        queuePreviewUpdate();
+    });
     document.getElementById('includeDeclaration').addEventListener('change', queuePreviewUpdate);
 
     // Load from localStorage if available
     loadFromLocalStorage();
+    syncObjectiveToggleState();
     updatePreview();
 
     const form = document.getElementById('cvForm');
@@ -183,6 +188,16 @@ function updateATSToggleLabel(toggle, isActive) {
     if (label) {
         label.textContent = isActive ? 'ATS On' : 'ATS';
     }
+}
+
+function syncObjectiveToggleState() {
+    const includeObjective = document.getElementById('includeObjective');
+    const objectiveInput = document.getElementById('objective');
+    if (!includeObjective || !objectiveInput) return;
+
+    const isEnabled = includeObjective.checked;
+    objectiveInput.disabled = !isEnabled;
+    objectiveInput.setAttribute('aria-disabled', (!isEnabled).toString());
 }
 
 function showToast(message, type = 'success') {
@@ -572,8 +587,9 @@ function updatePreview() {
     }
 
     // Update objective
+    const includeObjective = document.getElementById('includeObjective').checked;
     const objective = document.getElementById('objective').value;
-    if (objective.trim()) {
+    if (includeObjective && objective.trim()) {
         document.getElementById('objectiveSection').style.display = 'block';
         document.getElementById('previewObjective').textContent = objective;
     } else {
@@ -1051,6 +1067,7 @@ function saveToLocalStorage() {
         location: document.getElementById('location').value,
         summary: document.getElementById('summary').value,
         objective: document.getElementById('objective').value,
+        includeObjective: document.getElementById('includeObjective').checked,
         skills: document.getElementById('skills').value,
         languages: document.getElementById('languages').value,
         hobbies: document.getElementById('hobbies').value,
@@ -1215,12 +1232,14 @@ function loadFromLocalStorage() {
     document.getElementById('location').value = formData.location || '';
     document.getElementById('summary').value = formData.summary || '';
     document.getElementById('objective').value = formData.objective || '';
+    document.getElementById('includeObjective').checked = formData.includeObjective !== false;
     document.getElementById('skills').value = formData.skills || '';
     document.getElementById('languages').value = formData.languages || '';
     document.getElementById('hobbies').value = formData.hobbies || '';
     document.getElementById('declaration').value = formData.declaration || '';
     document.getElementById('declarationDate').value = formData.declarationDate || '';
     document.getElementById('includeDeclaration').checked = formData.includeDeclaration !== false;
+    syncObjectiveToggleState();
 
     // Clear and reload education
     document.getElementById('educationList').innerHTML = '';
@@ -1343,9 +1362,8 @@ async function loadSampleCV() {
     }
 }
 
-// Download sample JSON template
-function downloadSampleJSON() {
-    const sampleData = {
+function getCVTemplateData() {
+    return {
         fullName: "",
         title: "",
         email: "",
@@ -1353,6 +1371,7 @@ function downloadSampleJSON() {
         location: "",
         summary: "",
         objective: "",
+        includeObjective: true,
         skills: "",
         languages: "",
         hobbies: "",
@@ -1426,6 +1445,40 @@ function downloadSampleJSON() {
             }
         ]
     };
+}
+
+function openChatGPTWithTemplate() {
+    const templateText = JSON.stringify(getCVTemplateData());
+    const prompt = [
+        'Replace all placeholder values in this CV JSON template with my real details.',
+        'Keep exactly the same keys and structure.',
+        'Use concise bullet-style lines in description fields.',
+        'Return only valid JSON with no markdown and no explanation.',
+        '',
+        templateText
+    ].join('\n');
+
+    const encodedPrompt = encodeURIComponent(prompt);
+    const chatUrl = `https://chatgpt.com/?q=${encodedPrompt}`;
+    const opened = window.open(chatUrl, '_blank');
+
+    if (!opened) {
+        showToast('Popup blocked. Please allow popups and try again.', 'error');
+        return;
+    }
+
+    navigator.clipboard.writeText(prompt)
+        .then(() => {
+            showToast('ChatGPT opened and prompt copied to clipboard.', 'success');
+        })
+        .catch(() => {
+            showToast('ChatGPT opened. If prompt is not prefilled, paste from clipboard.', 'success');
+        });
+}
+
+// Download sample JSON template
+function downloadSampleJSON() {
+    const sampleData = getCVTemplateData();
     
     const dataStr = JSON.stringify(sampleData, null, 2);
     const dataBlob = new Blob([dataStr], { type: 'application/json' });
@@ -1475,12 +1528,14 @@ function loadFormData(formData) {
     document.getElementById('location').value = formData.location || '';
     document.getElementById('summary').value = formData.summary || '';
     document.getElementById('objective').value = formData.objective || '';
+    document.getElementById('includeObjective').checked = formData.includeObjective !== false;
     document.getElementById('skills').value = formData.skills || '';
     document.getElementById('languages').value = formData.languages || '';
     document.getElementById('hobbies').value = formData.hobbies || '';
     document.getElementById('declaration').value = formData.declaration || '';
     document.getElementById('declarationDate').value = formData.declarationDate || '';
     document.getElementById('includeDeclaration').checked = formData.includeDeclaration !== false;
+    syncObjectiveToggleState();
 
     // Clear and reload education
     document.getElementById('educationList').innerHTML = '';

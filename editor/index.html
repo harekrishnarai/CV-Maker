@@ -49,6 +49,7 @@
                 <div class="header-actions">
                     <button type="button" class="add-btn" onclick="loadSampleCV()"><i class="fa-regular fa-clipboard"></i> Load Sample CV</button>
                     <button type="button" class="add-btn secondary" onclick="downloadSampleJSON()"><i class="fa-solid fa-download"></i> JSON Template</button>
+                    <button type="button" class="add-btn secondary" onclick="openChatGPTWithTemplate()"><i class="fa-solid fa-wand-magic-sparkles"></i> Open in ChatGPT</button>
                     <label for="jsonFileInput" class="add-btn tertiary file-upload"><i class="fa-solid fa-upload"></i> Upload JSON</label>
                     <input type="file" id="jsonFileInput" accept=".json" style="display: none;" onchange="uploadJSON(event)">
                     <button type="button" id="togglePasteJsonBtn" class="add-btn tertiary" aria-expanded="false" aria-controls="pasteJsonPanel" onclick="togglePasteJSONPanel()"><i class="fa-solid fa-paste"></i> Paste JSON</button>
@@ -62,7 +63,7 @@
                             <button type="button" class="add-btn tertiary" onclick="clearPastedJSON()"><i class="fa-solid fa-eraser"></i> Clear</button>
                         </div>
                     </div>
-                    <div class="action-note">Tip: Upload or paste JSON to auto-fill the form.</div>
+                    <div class="action-note">Tip: Use ChatGPT with template JSON, then upload or paste the result.</div>
                 </div>
                 <div id="saveStatus" class="save-status" aria-live="polite">All changes saved</div>
                 <div class="mobile-toggle" role="tablist" aria-label="Form or Preview">
@@ -110,8 +111,17 @@
 
                 <!-- Objective -->
                 <h2><i class="fa-solid fa-bullseye"></i> Objective</h2>
-                <div class="form-group">
+                <div class="form-group inline-toggle">
                     <label for="objective">Career Objective</label>
+                    <div class="toggle-inline">
+                        <span>Include</span>
+                        <label class="switch">
+                            <input type="checkbox" id="includeObjective" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
                     <textarea id="objective" placeholder="Describe your career goals and what you're looking for..."></textarea>
                 </div>
 

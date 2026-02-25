@@ -478,6 +478,11 @@ grid-column: 1 / -1;
 grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 }
+@media (min-width: 1320px) {
+.header-actions {
+grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+}
 .header-actions .add-btn {
 padding: 9px 14px;
 font-size: 13px;

@@ -6,6 +6,7 @@
   "location": "City, Country",
   "summary": "A brief professional summary about yourself, your experience, and career goals. This should be 2-3 sentences highlighting your key strengths and what you bring to an organization.",
   "objective": "Your career objective - what you're looking for in your next role and what you aim to achieve professionally.",
+  "includeObjective": true,
   "skills": "Skill 1, Skill 2, Skill 3, Skill 4, Skill 5, Skill 6, Skill 7, Skill 8",
   "languages": "English, Spanish, French",
   "hobbies": "Reading, Photography, Hiking",
