@@ -78,6 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
 let previewUpdateTimer = null;
 let draggingItem = null;
 let draggingSourceList = null;
+let reorderToastShown = false;
 
 const SORTABLE_LIST_IDS = [
     'educationList',
@@ -117,8 +118,15 @@ function initSectionReordering() {
             if (!draggingItem || draggingSourceList !== list) return;
             event.preventDefault();
             queuePreviewUpdate();
+            showReorderToastOnce();
         });
     });
+}
+
+function showReorderToastOnce() {
+    if (reorderToastShown) return;
+    reorderToastShown = true;
+    showToast('Section order updated and saved.', 'success');
 }
 
 function getDragAfterElement(container, mouseY) {
@@ -139,7 +147,10 @@ function getDragAfterElement(container, mouseY) {
 }
 
 function addDragHandle(item) {
-    if (!item || item.querySelector('.drag-handle')) return;
+    if (!item || item.querySelector('.reorder-controls')) return;
+
+    const controls = document.createElement('div');
+    controls.className = 'reorder-controls';
 
     const handle = document.createElement('button');
     handle.type = 'button';
@@ -147,6 +158,20 @@ function addDragHandle(item) {
     handle.draggable = true;
     handle.setAttribute('aria-label', 'Reorder item');
     handle.innerHTML = '<i class="fa-solid fa-grip-vertical"></i> Reorder';
+
+    const upButton = document.createElement('button');
+    upButton.type = 'button';
+    upButton.className = 'reorder-btn';
+    upButton.setAttribute('aria-label', 'Move item up');
+    upButton.innerHTML = '<i class="fa-solid fa-arrow-up"></i>';
+    upButton.addEventListener('click', () => moveItemByOffset(item, -1));
+
+    const downButton = document.createElement('button');
+    downButton.type = 'button';
+    downButton.className = 'reorder-btn';
+    downButton.setAttribute('aria-label', 'Move item down');
+    downButton.innerHTML = '<i class="fa-solid fa-arrow-down"></i>';
+    downButton.addEventListener('click', () => moveItemByOffset(item, 1));
 
     handle.addEventListener('dragstart', (event) => {
         draggingItem = item;
@@ -164,7 +189,31 @@ function addDragHandle(item) {
         draggingSourceList = null;
     });
 
-    item.insertAdjacentElement('afterbegin', handle);
+    controls.appendChild(handle);
+    controls.appendChild(upButton);
+    controls.appendChild(downButton);
+    item.insertAdjacentElement('afterbegin', controls);
+}
+
+function moveItemByOffset(item, offset) {
+    if (!item || !item.parentElement || offset === 0) return;
+    const parent = item.parentElement;
+    const siblings = Array.from(parent.children).filter(node => node.classList.contains('form-array-item'));
+    const currentIndex = siblings.indexOf(item);
+    if (currentIndex < 0) return;
+
+    const targetIndex = currentIndex + offset;
+    if (targetIndex < 0 || targetIndex >= siblings.length) return;
+
+    const target = siblings[targetIndex];
+    if (offset < 0) {
+        parent.insertBefore(item, target);
+    } else {
+        parent.insertBefore(item, target.nextSibling);
+    }
+
+    queuePreviewUpdate();
+    showReorderToastOnce();
 }
 
 function initThemeToggle() {

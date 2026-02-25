@@ -437,6 +437,28 @@ margin-bottom: 12px;
 .drag-handle:active {
 cursor: grabbing;
 }
+.reorder-controls {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+margin-bottom: 12px;
+}
+.reorder-controls .drag-handle {
+margin-bottom: 0;
+}
+.reorder-btn {
+width: 30px;
+height: 30px;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+border-radius: 999px;
+border: 1px solid rgba(20, 20, 20, 0.24);
+background: rgba(255, 255, 255, 0.75);
+color: var(--ink);
+cursor: pointer;
+font-size: 12px;
+}
 .form-array-item.dragging {
 opacity: 0.7;
 transform: scale(0.995);
@@ -573,6 +595,11 @@ font-size: 12px;
 color: var(--muted);
 opacity: 0.9;
 transition: opacity 0.3s ease;
+}
+.reorder-tip {
+margin-top: 6px;
+font-size: 11px;
+color: var(--muted);
 }
 .save-status.pulse {
 opacity: 1;
@@ -1044,6 +1071,14 @@ box-shadow: 0 10px 18px rgba(0, 0, 0, 0.35);
 background: rgba(15, 23, 42, 0.72);
 border-color: rgba(255, 255, 255, 0.25);
 color: var(--ink);
+}
+[data-theme="dark"] .reorder-btn {
+background: rgba(15, 23, 42, 0.72);
+border-color: rgba(255, 255, 255, 0.25);
+color: var(--ink);
+}
+[data-theme="dark"] .reorder-tip {
+color: #a7b0bd;
 }
 [data-theme="dark"] .view-toggle {
 background: rgba(15, 23, 42, 0.7);
